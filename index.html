@@ -7,15 +7,20 @@
         </script>
     </head>
     <body>
+        
         <h1>
-            TO DO 
+           <div align = "center"> TO DO </div>
         </h1>
+        <h4>
+            Delete:
+            <input type="checkbox" value="Delete" id="delete_button" onclick="delete_mode = !delete_mode;"/>
+            Delete all:
+            <input type="checkbox" value="Delete" id="delete_button" onclick="delete_all_nodes();"/>
+        </h4>
+        
         
         <table id="content">
-            <tr>
-                <td> Circle</td>
-                <td> Data</td>
-            </tr>
+            
         </table>
         
         <table id = "newitem">      
