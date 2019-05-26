@@ -38,7 +38,7 @@ function make_row_cleaner(data_to_put_in_row){
             new_button.innerHTML = "o";
             new_button.onclick = function() {
                 if(delete_mode){
-                    remove_todo(new_button.id); //when user wants to delete the node
+                    remove_todo(('row'+new_button.id.toString())); //when user wants to delete the node
                     delete_mode = false;
                     document.getElementById("delete_button").checked = false;
                 }
@@ -63,7 +63,8 @@ function make_row_cleaner(data_to_put_in_row){
             new_division.className = number_of_item.toString();
             new_division.id = 'div'+number_of_item.toString();
             new_division.innerHTML = data_to_put_in_row;
-            //new_division.onclick = alert("edit todo here!");
+            new_division.contentEditable = true;
+            new_division.onmouseover = new_division.style.cursor = 'pointer';
         second_column.appendChild(new_division);
 
     new_row.appendChild(first_column);
