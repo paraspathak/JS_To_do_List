@@ -22,18 +22,16 @@ function format_string (front, middle, back){
 }
 
 function create_new_todo_item() {
-    var new_row = document.createElement('div');
+    var new_row = document.createElement('tr');
     new_row.className = 'row';
-    var button_tags = '<input type="button" value="o" id = "';
-    button_tags= button_tags + number_of_item.toString() + 'onclick="remove_todo(' + number_of_item.toString() + ')">'; 
-    var div_tags= '<div class ="';
-    div_tags = div_tags + number_of_item.toString() + '" id ="' +number_of_item.toString()+  '" ></div>' ;
+    var button_tags = '<td><input type="button" value="o" id = "';
+    button_tags= button_tags + number_of_item.toString() + 'onclick="remove_todo(' + number_of_item.toString() + ')"></td>'; 
+    var div_tags= '<td><div class ="';
+    div_tags = div_tags + number_of_item.toString() + '" id ="' +number_of_item.toString()+  '" ></div></td>' ;
     var tags = button_tags + div_tags;
     new_row.innerHTML = tags;
     document.getElementById("content").appendChild(new_row);
-    document.getElementsByClassName(number_of_item.toString())[0].addEventListener('click',function(event){
-        document.getElementsByID(number_of_item.toString()).innerHTML = document.getElementById(number_of_item.toString()).value;
-        } );
+    document.getElementById(number_of_item.toString()).innerHTML=document.getElementById("add_data").value
     number_of_item += 1;
 }
 
@@ -54,5 +52,11 @@ function create_new_todo_item_(item_name, item_type){
         document.getElementById(number_of_item).style.color = "blue";
     }
     number_of_item +=1;
+}
+
+function search(ele){
+    if(event.key==='Enter'){
+        create_new_todo_item();
+    }
 }
 

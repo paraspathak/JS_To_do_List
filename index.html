@@ -10,15 +10,19 @@
         <h1>
             Hello hello
         </h1>
-        <div id = "0">
-
-        </div>
-        <div id="1">           
-        </div>
-
-        <div id="content">
-
-        </div>
-        <input type="button" value="+" onclick="create_new_todo_item()">
+        
+        <table id="content">
+            <tr>
+                <td> Circle</td>
+                <td> Data</td>
+            </tr>
+        </table>
+        
+        <table id = "newitem">      
+            <tr>
+                <td><input type="button" value="+" onclick="create_new_todo_item()"></td>
+                <td><input type="text" id="add_data" placeholder = "Enter a ToDo item" onkeydown="search(this)"/></td>
+            </tr>   
+        </table>
     </body>
 </html>
