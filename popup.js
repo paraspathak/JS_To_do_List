@@ -1,31 +1,53 @@
 
-window.addEventListener('keydown', listen_keystrokes, false)
-
 var number_of_item = 0;
 var delete_mode = false;
 
-//removing rows when delete is pressed
-Element.prototype.remove = function() {
-    this.parentElement.removeChild(this);
-}
-NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-    for(var i = this.length - 1; i >= 0; i--) {
-        if(this[i] && this[i].parentElement) {
-            this[i].parentElement.removeChild(this[i]);
+document.getElementById("create_new_todo_item").addEventListener("click",
+    function(){
+        console.log("newtodo item call block");
+        create_new_todo_item();
+        
+    }
+);
+
+document.getElementById("add_data").addEventListener("keypress",
+    function(event){
+        if(event.key=='Enter'){
+            console.log("enter key pressed");
+            create_new_todo_item();
+            document.getElementById("add_data").value="";
         }
     }
-}
+);
 
-//search for copying the URL as a todo list
-function listen_keystrokes(e){
-    if (e.keyCode == 84 && e.shiftKey){ //listen to event of Shift + T pressed.
-        document.getElementById("add_data").value="";
-        create_new_todo_item_link(window.location.href);
+
+document.getElementById("delete_button").addEventListener("click", 
+function(){
+    console.log("delete button signal clicked");
+    delete_mode = !delete_mode;
+});
+
+document.getElementById("delete_all_button").addEventListener("click", 
+function(){
+    for (var i =0; i< number_of_item; i++){
+        remove_todo(('row'+i.toString()));
+    }
+    delete_mode = false;
+    console.log("Delete all ");
+    document.getElementById("delete_button").checked = false;
+});
+
+
+function remove_todo(id){
+    el = document.getElementById((id));
+    if(el){
+        el.remove();
     }
 }
 
-//working function that creates the todo item
+
 function make_row_cleaner(data_to_put_in_row){
+    console.log("Inside make row cleaner");
     var new_row = document.createElement('tr');     //create a new row
     new_row.className='row';
     new_row.id = 'row'+number_of_item.toString();
@@ -38,7 +60,7 @@ function make_row_cleaner(data_to_put_in_row){
             new_button.innerHTML = "o";
             new_button.onclick = function() {
                 if(delete_mode){
-                    remove_todo(new_button.id); //when user wants to delete the node
+                    remove_todo(('row'+new_button.id.toString())); //when user wants to delete the node
                     delete_mode = false;
                     document.getElementById("delete_button").checked = false;
                 }
@@ -63,7 +85,8 @@ function make_row_cleaner(data_to_put_in_row){
             new_division.className = number_of_item.toString();
             new_division.id = 'div'+number_of_item.toString();
             new_division.innerHTML = data_to_put_in_row;
-            //new_division.onclick = alert("edit todo here!");
+            new_division.contentEditable = true;
+            new_division.onmouseover = new_division.style.cursor = 'pointer';
         second_column.appendChild(new_division);
 
     new_row.appendChild(first_column);
@@ -73,8 +96,8 @@ function make_row_cleaner(data_to_put_in_row){
     document.getElementById("add_data").value='';
 }
 
-//function that creates a new todo items, plus button or enter is pressed to call on here
-function create_new_todo_item() {
+function create_new_todo_item(){
+    console.log("Inside create new todo");
     if(document.getElementById("add_data").value===""){
         document.getElementById("add_data").placeholder="Please enter new todo!!";
     }
@@ -83,39 +106,5 @@ function create_new_todo_item() {
         document.getElementById(('div'+number_of_item.toString())).style.color="red";
         number_of_item += 1;
     }
-    
-}
-//function that gets called to create a new todo item with the websites current link
-function create_new_todo_item_link(item_name){
-    make_row_cleaner(item_name);
-    document.getElementById(('div'+number_of_item.toString())).style.color="blue";
-    number_of_item +=1;
 }
 
-//handler for the case when enter is pressed during adding todo items
-function search(ele){
-    if(event.key==='Enter'){
-        create_new_todo_item();
-        document.getElementById("add_data").value="";
-    }
-}
-
-function remove_todo(id){
-    document.getElementById((id)).remove();
-}
-
-//Deletes all the todo items
-function delete_all_nodes(){
-    for (var i =0; i< number_of_item; i++){
-        remove_todo(('row'+i.toString()));
-    }
-    delete_mode = false;
-    document.getElementById("delete_button").checked = false;
-}
-
-
-function edit_todo(){
-    for (var i =0; i< number_of_item; i++){
-
-    }
-}
