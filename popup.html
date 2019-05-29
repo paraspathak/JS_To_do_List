@@ -3,8 +3,6 @@
         <title>
             Tests
         </title>
-        <script src = "popup.js">
-        </script>
     </head>
     <body>
         
@@ -13,9 +11,9 @@
         </h1>
         <h4>
             Delete:
-            <input type="checkbox" value="Delete" id="delete_button" onclick="delete_mode = !delete_mode;"/>
+            <input type="checkbox" value="Delete" id="delete_button"/>
             Delete all:
-            <input type="checkbox"  id="delete_button" onclick="delete_all_nodes();"/>
+            <input type="checkbox"  id="delete_all_button"/>
         </h4>
         
         
@@ -25,9 +23,11 @@
         
         <table id = "newitem">      
             <tr>
-                <td><input type="button" value="+" onclick="create_new_todo_item()"></td>
-                <td><input type="text" id="add_data" placeholder = "Enter a ToDo item" onkeydown="search(this)"/></td>
+                <td><input type="button" value="+" id="create_new_todo_item"></td>
+                <td><input type="text" id="add_data" placeholder = "Enter a ToDo item""/></td>
             </tr>   
         </table>
+        <script src = "popup.js">
+        </script>
     </body>
 </html>
