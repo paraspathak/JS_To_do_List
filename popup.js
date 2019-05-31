@@ -1,7 +1,10 @@
 //Global boolean to know if delete mode or not
 var delete_mode = false;
+var current_application = {}
 
 //Event Listeners
+
+//add three more listeners for the button, color and message
 
 //plus icon
 document.getElementById("create_new_todo_item").addEventListener("click",
@@ -109,13 +112,6 @@ class Todo_item {
             //Set the color and message
             new_division.style.color = this.todo_color;
             
-            /*
-            if(this.message==undefined){
-                console.log("else block", this.message);
-                this.message = document.getElementById("add_data").value;
-                console.log("after", this.message);
-            }*/
-
             new_division.innerHTML = this.todo_message;
             
             new_division.contentEditable = true;        //TODO!-need to track if the content is changed or not
@@ -138,10 +134,35 @@ class Todo_Application {
     add_todo_item(item){
         this.all_todo_items.push(item);
         this.next_number +=1;
+        this.save();
+    }
+    save(){
+        //First remove the current instance of the class
+        chrome.storage.sync.clear(function(event){
+            console.log(event, "Cleared item before saving");
+        });
+        //Save this instance of the class
+        console.log({"whole-application":this});
+        chrome.storage.sync.set({"whole-application":this}, function(event){
+            console.log("storing success");
+        });
+    }
+    load(){
+        //loop through current elements and create a new instance using current elements name,... and replace the value of current element
+        for (var i =0; i<this.next_number; i++){
+            //only messages are being load
+            console.log(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
+            var temp = new Todo_item(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
+            temp.add_to_html();
+            console.log(temp);
+            this.all_todo_items[i] = temp;
+        }
     }
 }
 
 // Helper functions
+
+//Remove given todo
 function remove_todo(id){
     el = document.getElementById((id));
     if(el){
@@ -166,5 +187,24 @@ function create_new_todo_item(){
     }
 }
 
-//Instance a new application
-var current_application = new Todo_Application(0);
+//intialize an empty object
+current_application = new Todo_Application(0);
+var loaded_from_file = false;
+
+//Load saved data
+chrome.storage.sync.get("whole-application",function(item){
+    if(item && !chrome.runtime.error){
+        var loaded_application = item["whole-application"];
+        console.log("New instance is ",loaded_application);
+        console.log(typeof(loaded_application));
+        current_application.all_todo_items = loaded_application.all_todo_items;
+        current_application.next_number = loaded_application.next_number;
+        loaded_from_file = true;
+        current_application.load();
+    }
+});
+
+if(!loaded_from_file) {
+    //Instance a new application
+    
+}
