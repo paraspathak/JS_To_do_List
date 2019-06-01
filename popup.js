@@ -6,6 +6,18 @@ var current_application = {}
 
 //add three more listeners for the button, color and message
 
+//menu icon
+
+document.getElementById("menu_appear").addEventListener("click",function(){
+    if(document.getElementById("make_menu").style.visibility == "visible"){
+        document.getElementById("make_menu").style.visibility = "collapse";
+    }
+    else{
+        document.getElementById("make_menu").style.visibility = "visible";
+    }
+
+});
+
 //plus icon
 document.getElementById("create_new_todo_item").addEventListener("click",
     function(){
@@ -64,6 +76,7 @@ class Todo_item {
         first_column.className = 'column';
             var new_button = document.createElement('button');  //button
             new_button.id = this.id_number.toString();  //stores the number of the button (0...n-1)
+            new_button.style.width = '28px';
             if(this.todo_button==="o"){
                 new_button.className = 'notdone'; //to either display checkmark or circle
                 new_button.innerHTML = "o";
@@ -118,8 +131,7 @@ class Todo_item {
             new_division.id = 'div'+ this.id_number.toString();
             
             //Set the color and message
-            new_division.style.color = this.todo_color;
-            
+            new_division.style.color = this.todo_color;            
             new_division.innerHTML = this.todo_message;
             
             new_division.contentEditable = true;        //TODO!-need to track if the content is changed or not
@@ -214,22 +226,17 @@ function create_new_todo_item(){
 
 //intialize an empty object
 current_application = new Todo_Application(0);
-var loaded_from_file = false;
+
 
 //Load saved data
 chrome.storage.sync.get("whole-application",function(item){
     if(item && !chrome.runtime.error){
         var loaded_application = item["whole-application"];
-        console.log("New instance is ",loaded_application);
-        console.log(typeof(loaded_application));
-        current_application.all_todo_items = loaded_application.all_todo_items;
-        current_application.next_number = loaded_application.next_number;
-        loaded_from_file = true;
-        current_application.load();
+        if(loaded_application){
+            current_application.all_todo_items = loaded_application.all_todo_items;
+            current_application.next_number = loaded_application.next_number;
+            current_application.load();
+        }        
     }
 });
 
-if(!loaded_from_file) {
-    //Instance a new application
-    
-}
