@@ -172,9 +172,14 @@ function remove_todo(id){
         for(var i =0; i<current_application.all_todo_items.length; i++){
             if(current_application.all_todo_items[i].id_number==id){
                 current_application.all_todo_items.splice(i,1);
+                for(var j = i; j<current_application.all_todo_items.length; j++){
+                    current_application.all_todo_items[j].id_number = j;
+                    console.log(current_application.all_todo_items[j].id_number,"Id number changed");
+                }
                 break;
             }
         }
+        current_application.next_number = current_application.all_todo_items.length;
         current_application.save();
     }
 }
