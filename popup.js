@@ -36,7 +36,7 @@ function(){
 document.getElementById("delete_all_button").addEventListener("click", 
 function(){
     for (var i =0; i< current_application.next_number; i++){
-        remove_todo(('row'+i.toString()));
+        remove_todo((i.toString()));
     }
     chrome.storage.sync.clear(function(){
         ;   //Deletes all the todos stored  
@@ -74,9 +74,11 @@ class Todo_item {
             }            
             new_button.onclick = function() {
                 if(delete_mode){
-                    remove_todo(('row'+new_button.id.toString())); //when user wants to delete the node
+                    remove_todo((new_button.id.toString())); //when user wants to delete the node
                     delete_mode = false;
                     document.getElementById("delete_button").checked = false;   //uncheck the delete mode
+                    current_application.save();
+                    console.log(current_application);
                 }
                 else{   //swaps between two images and changes color of the corresponding todo item
                     if(new_button.className=='notdone'){    
@@ -149,7 +151,7 @@ class Todo_Application {
     }
     load(){
         //loop through current elements and create a new instance using current elements name,... and replace the value of current element
-        for (var i =0; i<this.next_number; i++){
+        for (var i =0; i<this.all_todo_items.length; i++){
             //only messages are being load
             console.log(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
             var temp = new Todo_item(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
@@ -164,9 +166,16 @@ class Todo_Application {
 
 //Remove given todo
 function remove_todo(id){
-    el = document.getElementById((id));
+    el = document.getElementById(('row'+id));
     if(el){
         el.remove();
+        for(var i =0; i<current_application.all_todo_items.length; i++){
+            if(current_application.all_todo_items[i].id_number==id){
+                current_application.all_todo_items.splice(i,1);
+                break;
+            }
+        }
+        current_application.save();
     }
 }
 
