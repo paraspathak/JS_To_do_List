@@ -36,7 +36,7 @@ function(){
 document.getElementById("delete_all_button").addEventListener("click", 
 function(){
     for (var i =0; i< current_application.next_number; i++){
-        remove_todo(('row'+i.toString()));
+        remove_todo((i.toString()));
     }
     chrome.storage.sync.clear(function(){
         ;   //Deletes all the todos stored  
@@ -74,34 +74,38 @@ class Todo_item {
             }            
             new_button.onclick = function() {
                 if(delete_mode){
-                    remove_todo(('row'+new_button.id.toString())); //when user wants to delete the node
+                    remove_todo((new_button.id.toString())); //when user wants to delete the node
                     delete_mode = false;
                     document.getElementById("delete_button").checked = false;   //uncheck the delete mode
-                    current_application.all_todo_items.splice(this.id_number,1);
                     current_application.save();
+                    console.log(current_application);
                 }
                 else{   //swaps between two images and changes color of the corresponding todo item
                     if(new_button.className=='notdone'){    
+                        //change the button status
                         new_button.innerHTML = "&#10003";   
-                        this.todo_button = "&#10003";   
-                        
-                        //change the stored button as well
                         new_button.className = 'done';
+
+                        //Update the array
+                        console.log(new_button.id);
+                        
+                        update_stored_value(new_button.id,"green","&#10003");
+                        
                         
                         //Change the color of the element as well
                         document.getElementById(('div'+new_button.id.toString())).style.color="green";
-                        this.todo_color = "green";
-                        update_object(this.id_number,this.todo_message, this.todo_color, this.todo_button);
+                        
                     }
                     else if(new_button.className=='done'){
                         new_button.innerHTML = "o";
                         this.todo_button = "o";
 
                         new_button.className = 'notdone';
+
+                        update_stored_value(new_button.id,"purple","o");
                         
                         document.getElementById(('div'+new_button.id.toString())).style.color="purple";
                         this.todo_color = "purple";
-                        update_object(this.id_number,this);
                     }
                 }   
             }
@@ -166,11 +170,28 @@ class Todo_Application {
 
 // Helper functions
 
+function update_stored_value(item_id, color_to_change_to, button_to_change_to){
+    for(var i =0; i<current_application.all_todo_items.length; i++){
+        if(current_application.all_todo_items[i].id_number==item_id){
+            current_application.all_todo_items[i].todo_button = button_to_change_to;
+            current_application.all_todo_items[i].todo_color = color_to_change_to;
+            current_application.save();
+        }
+    }
+}
+
 //Remove given todo
 function remove_todo(id){
-    el = document.getElementById((id));
+    el = document.getElementById(('row'+id));
     if(el){
         el.remove();
+        for(var i =0; i<current_application.all_todo_items.length; i++){
+            if(current_application.all_todo_items[i].id_number==id){
+                current_application.all_todo_items.splice(i,1);
+                break;
+            }
+        }
+        current_application.save();
     }
 }
 
@@ -191,14 +212,6 @@ function create_new_todo_item(){
     }
 }
 
-function update_object(index, msg, clr, but){
-    console.log(index, msg, clr, but);
-    current_application.all_todo_items[index] = new Todo_item(index, msg, clr,but);
-    console.log(current_application.all_todo_items[index] );
-    current_application.save();
-}
-
-//Main script
 //intialize an empty object
 current_application = new Todo_Application(0);
 var loaded_from_file = false;
@@ -216,4 +229,7 @@ chrome.storage.sync.get("whole-application",function(item){
     }
 });
 
-window.onbeforeunload = function(){current_application.load();};
+if(!loaded_from_file) {
+    //Instance a new application
+    
+}
