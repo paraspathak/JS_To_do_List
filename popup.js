@@ -77,18 +77,21 @@ class Todo_item {
                     remove_todo(('row'+new_button.id.toString())); //when user wants to delete the node
                     delete_mode = false;
                     document.getElementById("delete_button").checked = false;   //uncheck the delete mode
+                    current_application.all_todo_items.splice(this.id_number,1);
+                    current_application.save();
                 }
                 else{   //swaps between two images and changes color of the corresponding todo item
                     if(new_button.className=='notdone'){    
                         new_button.innerHTML = "&#10003";   
                         this.todo_button = "&#10003";   
-
+                        
                         //change the stored button as well
                         new_button.className = 'done';
                         
                         //Change the color of the element as well
                         document.getElementById(('div'+new_button.id.toString())).style.color="green";
                         this.todo_color = "green";
+                        update_object(this.id_number,this.todo_message, this.todo_color, this.todo_button);
                     }
                     else if(new_button.className=='done'){
                         new_button.innerHTML = "o";
@@ -98,6 +101,7 @@ class Todo_item {
                         
                         document.getElementById(('div'+new_button.id.toString())).style.color="purple";
                         this.todo_color = "purple";
+                        update_object(this.id_number,this);
                     }
                 }   
             }
@@ -149,7 +153,7 @@ class Todo_Application {
     }
     load(){
         //loop through current elements and create a new instance using current elements name,... and replace the value of current element
-        for (var i =0; i<this.next_number; i++){
+        for (var i =0; i<this.all_todo_items.length; i++){
             //only messages are being load
             console.log(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
             var temp = new Todo_item(this.all_todo_items[i].id_number,this.all_todo_items[i].todo_message,this.all_todo_items[i].todo_color, this.all_todo_items[i].todo_button);
@@ -187,6 +191,14 @@ function create_new_todo_item(){
     }
 }
 
+function update_object(index, msg, clr, but){
+    console.log(index, msg, clr, but);
+    current_application.all_todo_items[index] = new Todo_item(index, msg, clr,but);
+    console.log(current_application.all_todo_items[index] );
+    current_application.save();
+}
+
+//Main script
 //intialize an empty object
 current_application = new Todo_Application(0);
 var loaded_from_file = false;
@@ -204,7 +216,4 @@ chrome.storage.sync.get("whole-application",function(item){
     }
 });
 
-if(!loaded_from_file) {
-    //Instance a new application
-    
-}
+window.onbeforeunload = function(){current_application.load();};
