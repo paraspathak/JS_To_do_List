@@ -1,28 +1,31 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>
-            Tests
-        </title>
+        <link href='https://fonts.googleapis.com/css?family=Brawler' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet'>
     </head>
     <body>
         
         <h1>
-           <div align = "center"> TO DO </div>
+           <div align = "center" style="font-family: 'Brawler'; font-size: 22px; color: #2d96ad"> TO DO </div>
+           <div id="menu_appear" align = "right"><img src="menu.svg"> </div>
         </h1>
-        <h4>
+        <div id = "make_menu" style="font-family: 'Lucida Sans'; font-size: 15px; visibility: collapse">
             Delete:
-            <input type="checkbox" value="Delete" id="delete_button"/>
-            <input type="button"  id="delete_all_button" value="Delete all:"/>
-        </h4>
+            <input type="checkbox" class = "buttons" value="Delete" id="delete_button" style="width: 28px; margin-bottom: 5px;"/>
+            <input type="button"  id="delete_all_button" value="Delete all:" style="font-family: 'Lucida Sans'; font-size: 15px;"/>
+            <br/>
+        </div>
         
         
-        <table id="content">
+        
+        <table id="content" style="font-family: 'Cantarell'; font-size: 15px;">
             
         </table>
         
         <table id = "newitem">      
             <tr>
-                <td><input type="button" value="+" id="create_new_todo_item"></td>
+                <td><input type="button" value="+" class = "buttons" id="create_new_todo_item"></td>
                 <td><input type="text" id="add_data" placeholder = "Enter a ToDo item""/></td>
             </tr>   
         </table>
