@@ -82,21 +82,27 @@ class Todo_item {
                 }
                 else{   //swaps between two images and changes color of the corresponding todo item
                     if(new_button.className=='notdone'){    
+                        //change the button status
                         new_button.innerHTML = "&#10003";   
-                        this.todo_button = "&#10003";   
-
-                        //change the stored button as well
                         new_button.className = 'done';
+
+                        //Update the array
+                        console.log(new_button.id);
+                        
+                        update_stored_value(new_button.id,"green","&#10003");
+                        
                         
                         //Change the color of the element as well
                         document.getElementById(('div'+new_button.id.toString())).style.color="green";
-                        this.todo_color = "green";
+                        
                     }
                     else if(new_button.className=='done'){
                         new_button.innerHTML = "o";
                         this.todo_button = "o";
 
                         new_button.className = 'notdone';
+
+                        update_stored_value(new_button.id,"purple","o");
                         
                         document.getElementById(('div'+new_button.id.toString())).style.color="purple";
                         this.todo_color = "purple";
@@ -164,6 +170,16 @@ class Todo_Application {
 
 // Helper functions
 
+function update_stored_value(item_id, color_to_change_to, button_to_change_to){
+    for(var i =0; i<current_application.all_todo_items.length; i++){
+        if(current_application.all_todo_items[i].id_number==item_id){
+            current_application.all_todo_items[i].todo_button = button_to_change_to;
+            current_application.all_todo_items[i].todo_color = color_to_change_to;
+            current_application.save();
+        }
+    }
+}
+
 //Remove given todo
 function remove_todo(id){
     el = document.getElementById(('row'+id));
@@ -172,14 +188,9 @@ function remove_todo(id){
         for(var i =0; i<current_application.all_todo_items.length; i++){
             if(current_application.all_todo_items[i].id_number==id){
                 current_application.all_todo_items.splice(i,1);
-                for(var j = i; j<current_application.all_todo_items.length; j++){
-                    current_application.all_todo_items[j].id_number = j;
-                    console.log(current_application.all_todo_items[j].id_number,"Id number changed");
-                }
                 break;
             }
         }
-        current_application.next_number = current_application.all_todo_items.length;
         current_application.save();
     }
 }
