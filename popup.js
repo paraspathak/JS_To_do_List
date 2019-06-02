@@ -25,9 +25,9 @@ document.getElementById("menu_appear").addEventListener("click",function(){
 //save icon
 document.getElementById("save_all_button").addEventListener("click",function(){
     for(var i=0; i<current_application.all_todo_items.length; i++){
-        var temp = document.getElementById(('div'+i.toString())).innerHTML;
+        var temp = document.getElementById(('div'+ current_application.all_todo_items[i].id_number.toString()));
         if(temp){
-            current_application.all_todo_items[i].todo_message = temp;
+            current_application.all_todo_items[i].todo_message = temp.innerHTML;
         }        
     }
     current_application.save();
@@ -92,6 +92,7 @@ class Todo_item {
             var new_button = document.createElement('button');  //button
             new_button.id = this.id_number.toString();  //stores the number of the button (0...n-1)
             new_button.style.width = '28px';
+            new_button.style.background = 'transparent' ;
             if(this.todo_button==="o"){
                 new_button.className = 'notdone'; //to either display checkmark or circle
                 new_button.innerHTML = "o";
@@ -99,7 +100,10 @@ class Todo_item {
             else {
                 new_button.className = 'done'; //to either display checkmark or circle
                 new_button.innerHTML = "&#10003";
-            }            
+            }
+            new_button.style.border = '2px solid';            
+            new_button.style.borderColor = this.todo_color;
+            new_button.style.borderRadius = '6px';
             new_button.onclick = function() {
                 if(delete_mode){
                     remove_todo((new_button.id.toString())); //when user wants to delete the node
@@ -113,13 +117,9 @@ class Todo_item {
                         //change the button status
                         new_button.innerHTML = "&#10003";   
                         new_button.className = 'done';
-
+                        new_button.style.borderColor = "green"; 
                         //Update the array
-                        console.log(new_button.id);
-                        
                         update_stored_value(new_button.id,"green","&#10003");
-                        
-                        
                         //Change the color of the element as well
                         document.getElementById(('div'+new_button.id.toString())).style.color="green";
                         
@@ -127,7 +127,7 @@ class Todo_item {
                     else if(new_button.className=='done'){
                         new_button.innerHTML = "o";
                         this.todo_button = "o";
-
+                        new_button.style.borderColor = "purple"; 
                         new_button.className = 'notdone';
 
                         update_stored_value(new_button.id,"purple","o");
