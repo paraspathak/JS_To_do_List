@@ -1,8 +1,9 @@
 # JS_To_do_List
-JS To-do-list app for Google Chrome which automatically sends email reminder 
+JS To-do-list app for Google Chrome to organize your day
 
-This is a Todo app for Google Chrome browser, some planned features include:
-  1) capture the current url and save it as a todo item (shift + T)
-  2) create new items
-  3) edit items
-  4) delete items
+Features: 
+  1) Add the selected object as a TODO item by right click menu option
+  2) Create new items
+  3) Edit items
+  4) Delete items
+  5) Syncs across Google account to save your todos
