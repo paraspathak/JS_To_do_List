@@ -1,13 +1,17 @@
 //Global boolean to know if delete mode or not
 var delete_mode = false;
-var current_application = {}
+var current_application = {};
+
+full_date = new Date();
+y = full_date.getFullYear();
+m = full_date.getMonth();
+d = full_date.getDate();
+
+document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
 
 //Event Listeners
 
-//add three more listeners for the button, color and message
-
 //menu icon
-
 document.getElementById("menu_appear").addEventListener("click",function(){
     if(document.getElementById("make_menu").style.visibility == "visible"){
         document.getElementById("make_menu").style.visibility = "collapse";
@@ -16,6 +20,17 @@ document.getElementById("menu_appear").addEventListener("click",function(){
         document.getElementById("make_menu").style.visibility = "visible";
     }
 
+});
+
+//save icon
+document.getElementById("save_all_button").addEventListener("click",function(){
+    for(var i=0; i<current_application.all_todo_items.length; i++){
+        var temp = document.getElementById(('div'+i.toString())).innerHTML;
+        if(temp){
+            current_application.all_todo_items[i].todo_message = temp;
+        }        
+    }
+    current_application.save();
 });
 
 //plus icon
@@ -224,6 +239,8 @@ function create_new_todo_item(){
     }
 }
 
+//Main Script
+
 //intialize an empty object
 current_application = new Todo_Application(0);
 
@@ -239,4 +256,3 @@ chrome.storage.sync.get("whole-application",function(item){
         }        
     }
 });
-
