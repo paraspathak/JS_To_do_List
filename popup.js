@@ -4,7 +4,7 @@ var current_application = {};
 
 full_date = new Date();
 y = full_date.getFullYear();
-m = full_date.getMonth();
+m = full_date.getMonth() + 1;
 d = full_date.getDate();
 
 document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
